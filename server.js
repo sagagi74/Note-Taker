@@ -7,11 +7,11 @@ const htmlRoutes = require('./routes/htmlRoutes');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware 
+// Middleware to parse JSON and urlencoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// public directory
+// Serve static files from the public directory
 app.use(express.static('public'));
 
 // Use the routes

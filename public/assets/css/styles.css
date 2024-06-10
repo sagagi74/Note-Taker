@@ -5,15 +5,13 @@ body {
   padding: 0;
 }
 
-.save-note, .new-note, .clear-btn {
-  display: none;
-}
-
+/* Remove display:none from the buttons */
 .icons {
   margin-left: 15px;
   margin-right: 15px;
   font-size: 1.5rem;
   cursor: pointer;
+  
 }
 
 .note-textarea,

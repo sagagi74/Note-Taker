@@ -3,6 +3,7 @@ let noteTitle;
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
+let clearBtn;
 let noteList;
 
 if (window.location.pathname === '/notes') {
@@ -13,6 +14,10 @@ if (window.location.pathname === '/notes') {
   newNoteBtn = document.querySelector('.new-note');
   clearBtn = document.querySelector('.clear-btn');
   noteList = document.querySelectorAll('.list-container .list-group');
+
+  // Set the note title and text areas to disabled initially
+  noteTitle.setAttribute('disabled', true);
+  noteText.setAttribute('disabled', true);
 }
 
 // Show an element
@@ -32,41 +37,45 @@ const getNotes = () =>
   fetch('/api/notes', {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   });
 
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(note)
+    body: JSON.stringify(note),
   });
 
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   });
 
 const renderActiveNote = () => {
   hide(saveNoteBtn);
   hide(clearBtn);
 
+
   if (activeNote.id) {
     show(newNoteBtn);
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
+    
+    
+
+    
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
-    hide(newNoteBtn);
-    noteTitle.removeAttribute('readonly');
-    noteText.removeAttribute('readonly');
+    noteTitle.setAttribute('readonly', true);
+    noteText.setAttribute('readonly', true);
     noteTitle.value = '';
     noteText.value = '';
   }
@@ -75,7 +84,7 @@ const renderActiveNote = () => {
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
-    text: noteText.value
+    text: noteText.value,
   };
   saveNote(newNote).then(() => {
     getAndRenderNotes();
@@ -104,15 +113,21 @@ const handleNoteDelete = (e) => {
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
   e.preventDefault();
+ 
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
   renderActiveNote();
 };
 
-// Sets the activeNote to and empty object and allows the user to enter a new note
+// Sets the activeNote to an empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
   activeNote = {};
+  noteTitle.removeAttribute('disabled');
+  noteText.removeAttribute('disabled');
+  noteTitle.removeAttribute('readonly');
+  noteText.removeAttribute('readonly');
+  noteTitle.value = '';
+  noteText.value = '';
   show(clearBtn);
-  renderActiveNote();
 };
 
 // Renders the appropriate buttons based on the state of the form
