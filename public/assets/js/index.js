@@ -15,7 +15,7 @@ if (window.location.pathname === '/notes') {
   clearBtn = document.querySelector('.clear-btn');
   noteList = document.querySelectorAll('.list-container .list-group');
 
-  // Set the note title and text areas to disabled initially
+  // Set the note title and text areas to disabled if new note button is not clicked
   noteTitle.setAttribute('disabled', true);
   noteText.setAttribute('disabled', true);
 }
